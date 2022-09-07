@@ -1,0 +1,17 @@
+.swimlane {
+  height: 100%;
+  background: #dbe0ff;
+  padding: 10px 12px;
+  border: 1px solid #dbe0ff;
+  border-radius: 6px;
+}
+
+.header {
+
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
