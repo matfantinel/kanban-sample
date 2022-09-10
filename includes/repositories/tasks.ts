@@ -1,18 +1,27 @@
-import * as fs from 'fs';
+// import * as fs from 'fs';
 
 import data from '../../data/tasks.json';
 let tasks = data as Task[] ?? [];
 
 const saveData = () => {
-  fs.writeFileSync('data/tasks.json', JSON.stringify(tasks, null, 4));
+  // TODO: this needs to run server-side only...
+  // But for some reason it's running client-side and fs is not accessible there
+  // Works if used directly in the API route file
+  // fs.writeFileSync('data/tasks.json', JSON.stringify(tasks, null, 4));
 };
+
+export enum TaskStatus {
+  ToDo = 'to-do',
+  InProgress = 'in-progress',
+  Done = 'done'
+}
 
 export type Task = {
   id: number;
   title: string;
   description: string;
   dateCreated: string;
-  status: 'to-do' | 'in-progress' | 'done';
+  status: TaskStatus;
 }
 
 export interface TaskRepository {
@@ -30,7 +39,7 @@ const create = (task: Task) => {
 
   // set default status if not provided
   if (!task.status) {
-    task.status = 'to-do';
+    task.status = TaskStatus.ToDo;
   }
 
   tasks.push(task);
