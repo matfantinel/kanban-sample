@@ -4,8 +4,8 @@ import { DragDropContext, Droppable, Draggable, DroppableProvided, DroppableStat
 import Swimlane from '../components/molecules/Swimlane';
 import TaskCard from '../components/molecules/TaskCard';
 import Swimlanes from '../components/organisms/Swimlanes';
-import { useTasks } from '../includes/data/tasks';
-import { Task, TaskStatus } from '../includes/repositories/tasks';
+import { useTasks } from '../includes/tasks/client';
+import { Task, TaskStatus } from '../includes/tasks/types';
 
 const SwimlanesContainer: React.FC = () => {
 

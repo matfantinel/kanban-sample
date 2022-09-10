@@ -1,5 +1,6 @@
 import useSWR from 'swr';
-import { Task } from '../repositories/tasks';
+
+import { Task } from './types';
 
 const fetcher = async (url: string, method: string, body?: object) => {
   return await fetch(url, {

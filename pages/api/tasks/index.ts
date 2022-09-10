@@ -1,4 +1,4 @@
-import TaskRepository from '../../../includes/repositories/tasks';
+import TaskRepository from '../../../includes/tasks/server';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 

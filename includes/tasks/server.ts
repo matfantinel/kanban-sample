@@ -1,28 +1,13 @@
 // import * as fs from 'fs';
-
 import data from '../../data/tasks.json';
-let tasks = data as Task[] ?? [];
+import { Task, TaskStatus } from './types';
+import * as fs from 'fs';
+
+let tasks = (data as Task[]) ?? [];
 
 const saveData = () => {
-  // TODO: this needs to run server-side only...
-  // But for some reason it's running client-side and fs is not accessible there
-  // Works if used directly in the API route file
-  // fs.writeFileSync('data/tasks.json', JSON.stringify(tasks, null, 4));
+  fs.writeFileSync('data/tasks.json', JSON.stringify(tasks, null, 4));
 };
-
-export enum TaskStatus {
-  ToDo = 'to-do',
-  InProgress = 'in-progress',
-  Done = 'done'
-}
-
-export type Task = {
-  id: number;
-  title: string;
-  description: string;
-  dateCreated: string;
-  status: TaskStatus;
-}
 
 export interface TaskRepository {
   getAll: () => Task[];
@@ -34,7 +19,7 @@ export interface TaskRepository {
 }
 
 const create = (task: Task) => {
-  task.id = tasks.length ? Math.max(...tasks.map(x => x.id)) + 1 : 1;
+  task.id = tasks.length ? Math.max(...tasks.map((x) => x.id)) + 1 : 1;
   task.dateCreated = new Date().toISOString();
 
   // set default status if not provided
