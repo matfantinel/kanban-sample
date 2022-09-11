@@ -3,14 +3,16 @@ import { Droppable } from 'react-beautiful-dnd';
 
 import { TaskStatus } from '../../../includes/tasks/types';
 import styles from './Swimlane.module.scss';
+import { Plus } from 'iconoir-react';
 
 type Props = {
   title: string;
   status: TaskStatus;
   children: React.ReactNode;
+  onCreateClick: () => void;
 };
 
-const Swimlane: React.FC<Props> = ({ title, status, children }) => {
+const Swimlane: React.FC<Props> = ({ title, status, children, onCreateClick }) => {
   return (
     <Droppable droppableId={status}>
       {(provided, snapshot) => (
@@ -19,7 +21,14 @@ const Swimlane: React.FC<Props> = ({ title, status, children }) => {
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
-          <h2 className={styles.header}>{title}</h2>
+          <div className={styles.header}>
+            <h2>{title}</h2>
+            <div className={styles.actions}>
+              <button className={styles.create} title='Add new task' onClick={onCreateClick}>
+                <Plus />
+              </button>
+            </div>
+          </div>
           <div className={styles.content}>{children}</div>
         </div>
       )}

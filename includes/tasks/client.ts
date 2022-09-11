@@ -10,10 +10,20 @@ export const useTasks = () => {
     return fetcher(`/api/tasks/${task.id}`, 'PUT', task).then(() => mutate());
   }
 
+  const createTask = (task: Task) => {
+    return fetcher(`/api/tasks`, 'POST', task).then(() => mutate());
+  }
+
+  const deleteTask = (id: number) => {
+    return fetcher(`/api/tasks/${id}`, 'DELETE').then(() => mutate());
+  }
+
   return {
     tasks: data,
     isLoading: !error && !data,
     error,
-    updateTask
+    updateTask,
+    createTask,
+    deleteTask
   };
 };

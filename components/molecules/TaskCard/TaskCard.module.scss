@@ -1,13 +1,14 @@
 .card {
   background: var(--surface-1);
   border: 2px dashed transparent;
-  padding: var(--size-4);
+  padding: var(--size-4) var(--size-4) var(--size-6);
   border-radius: var(--radius-3);
   box-shadow: var(--shadow-2);
   display: flex;
   flex-direction: column;
   gap: var(--size-1);
   transition: all 0.2s var(--ease-3);
+  position: relative;
 
   &.dragging {
     border-color: var(--blue-5);
@@ -19,9 +20,71 @@
 
   &:hover {
     box-shadow: var(--shadow-4);
+
+    .actions {
+      opacity: 1;
+      max-height: 100px;
+    }
   }
 
   .title {
     font-size: var(--font-size-3);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+  opacity: 0;
+  transition: all 0.3s var(--ease-1);
+  position: absolute;
+  right: var(--size-4);
+  bottom: var(--size-2);
+
+  .edit {
+    color: var(--blue-6);
+    background-color: var(--blue-0);
+    border: 1px solid var(--blue-1);
+    text-shadow: 0 1px 0 var(--blue-2);
+
+    &:hover {
+      background-color: var(--blue-1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: var(--blue-1);
+      background-color: hsl(var(--blue-9-hsl) / 30%);
+      border: 1px solid hsl(var(--blue-8-hsl) / 30%);
+      text-shadow: 0 1px 0 var(--blue-8);
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background-color: var(--blue-8);
+      }
+    }
+  }
+
+  .delete {
+    color: var(--red-6);
+    background-color: var(--red-0);
+    border: 1px solid var(--red-1);
+    text-shadow: 0 1px 0 var(--red-2);
+
+    &:hover {
+      background-color: var(--red-1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: var(--red-1);
+      background-color: hsl(var(--red-9-hsl) / 30%);
+      border: 1px solid hsl(var(--red-8-hsl) / 30%);
+      text-shadow: 0 1px 0 var(--red-8);
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background-color: var(--red-8);
+      }
+    }
   }
 }

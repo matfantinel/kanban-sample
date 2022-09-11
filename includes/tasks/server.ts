@@ -20,7 +20,6 @@ export interface TaskRepository {
 
 const create = (task: Task) => {
   task.id = tasks.length ? Math.max(...tasks.map((x) => x.id)) + 1 : 1;
-  task.dateCreated = new Date().toISOString();
 
   // set default status if not provided
   if (!task.status) {
