@@ -2,28 +2,28 @@
     {
         "title": "Add drag and drop",
         "description": "Allow dragging tasks from one column and dragging them on another.",
-        "id": 2,
+        "id": 1,
         "dateCreated": "2022-09-10T10:05:21.545Z",
-        "status": "done"
+        "status": "to-do"
     },
     {
         "title": "Add a create/edit form",
         "description": "Could be a modal orrrrr maybe a form contained in the card itself for simplicity.",
-        "id": 3,
+        "id": 2,
         "dateCreated": "2022-09-10T10:06:07.639Z",
         "status": "to-do"
     },
     {
         "title": "Read data from the API",
         "description": "Fetch tasks from API",
-        "id": 4,
+        "id": 3,
         "dateCreated": "2022-09-10T10:06:55.416Z",
-        "status": "done"
+        "status": "in-progress"
     },
     {
         "title": "Reorder tasks",
         "description": "Use drag and drop to reorder tasks in the same column. Need to add an 'order' property to the tasks.",
-        "id": 5,
+        "id": 4,
         "dateCreated": "2022-09-10T10:07:32.821Z",
         "status": "to-do"
     }

@@ -4,41 +4,78 @@ import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautif
 import Swimlane from '../components/molecules/Swimlane';
 import TaskCard from '../components/molecules/TaskCard';
 import Swimlanes from '../components/organisms/Swimlanes';
+import { useTaskOrders } from '../includes/task-orders/client';
 import { useTasks } from '../includes/tasks/client';
 import { Task, TaskStatus } from '../includes/tasks/types';
 
 const SwimlanesContainer: React.FC = () => {
-  const { tasks, isLoading, error, updateTask } = useTasks();
+  const { tasks, updateTask } = useTasks();
+  const { taskOrders, upsertTaskOrder } = useTaskOrders();
 
   const [todoTasks, setTodoTasks] = React.useState<Task[]>([]);
   const [inProgressTasks, setInProgressTasks] = React.useState<Task[]>([]);
   const [doneTasks, setDoneTasks] = React.useState<Task[]>([]);
 
   useEffect(() => {
+    const filterAndSortTasks = (status: TaskStatus) => {
+      if (!tasks) {
+        return [];
+      }
+
+      const statusOrder = taskOrders?.find((order) => order.status === status);
+      return [
+        ...tasks
+          .filter((task) => task.status === status)
+          .sort((a, b) => {
+            const aIndex = statusOrder?.tasks?.indexOf(a.id) ?? -1;
+            const bIndex = statusOrder?.tasks?.indexOf(b.id) ?? -1;
+            return aIndex - bIndex;
+          }),
+      ];
+    };
+
     if (tasks) {
-      setTodoTasks([...tasks.filter((task) => task.status === 'to-do')]);
-      setInProgressTasks(tasks.filter((task) => task.status === 'in-progress'));
-      setDoneTasks(tasks.filter((task) => task.status === 'done'));
+      setTodoTasks(filterAndSortTasks(TaskStatus.ToDo));
+      setInProgressTasks(filterAndSortTasks(TaskStatus.InProgress));
+      setDoneTasks(filterAndSortTasks(TaskStatus.Done));
     }
-  }, [tasks]);
+  }, [tasks, taskOrders]);
 
   const getTasksByStatus = (status: TaskStatus) => {
     switch (status) {
-      case 'to-do':
+      case TaskStatus.ToDo:
         return { tasks: todoTasks, setTasks: setTodoTasks };
-      case 'in-progress':
+      case TaskStatus.InProgress:
         return { tasks: inProgressTasks, setTasks: setInProgressTasks };
-      case 'done':
+      case TaskStatus.Done:
         return { tasks: doneTasks, setTasks: setDoneTasks };
       default:
         return null;
     }
   };
 
-  const handleReorder = (items: Task[], startIndex: number, endIndex: number) => {
+  const handleTaskOrderUpsert = (status: TaskStatus, tasks: Task[]) => {
+    let orderToUpsert = taskOrders?.find((order) => order.status === status);
+    if (!orderToUpsert) {
+      orderToUpsert = {
+        status,
+        tasks: [],
+      };
+    }
+
+    const newOrder = {
+      ...orderToUpsert,
+      tasks: tasks.map((task) => task.id),
+    };
+    upsertTaskOrder(newOrder);
+  };
+
+  const handleReorder = (items: Task[], startIndex: number, endIndex: number, status: TaskStatus) => {
     const result = Array.from(items);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
+
+    handleTaskOrderUpsert(status, result);
 
     return result;
   };
@@ -46,6 +83,7 @@ const SwimlanesContainer: React.FC = () => {
   const handleMoveBetweenLanes = (
     sourceItems: Task[],
     sourceIndex: number,
+    sourceStatus: TaskStatus,
     destinationItems: Task[],
     destinationIndex: number,
     destinationStatus: TaskStatus
@@ -58,6 +96,9 @@ const SwimlanesContainer: React.FC = () => {
     destClone.splice(destinationIndex, 0, updatedTask);
 
     updateTask(updatedTask);
+
+    handleTaskOrderUpsert(sourceStatus, sourceClone);
+    handleTaskOrderUpsert(destinationStatus, destClone);
 
     return {
       source: sourceClone,
@@ -82,6 +123,7 @@ const SwimlanesContainer: React.FC = () => {
       const { source: sourceResult, destination: destinationResult } = handleMoveBetweenLanes(
         source.tasks,
         result.source.index,
+        result.source.droppableId as TaskStatus,
         destination.tasks,
         result.destination.index,
         result.destination.droppableId as TaskStatus
@@ -89,7 +131,14 @@ const SwimlanesContainer: React.FC = () => {
       source.setTasks(sourceResult);
       destination.setTasks(destinationResult);
     } else {
-      source.setTasks(handleReorder(source.tasks, result.source.index, result.destination.index));
+      source.setTasks(
+        handleReorder(
+          source.tasks,
+          result.source.index,
+          result.destination.index,
+          result.destination.droppableId as TaskStatus
+        )
+      );
     }
   };
 
