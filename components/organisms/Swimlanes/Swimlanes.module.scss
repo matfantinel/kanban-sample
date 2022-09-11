@@ -1,15 +1,15 @@
 .container {
   height: 100%;
-  padding: 0 18px;
+  padding: var(--size-4);
   display: flex;
-  gap: 10px;
+  gap: var(--size-2);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 
   > div {
-    max-width: min(100%, calc(100vw - 36px));
+    max-width: min(100%, 100vw - 40px);
     min-width: min(360px, 100%);
-
+    flex: 1;
     scroll-snap-align: start;
     scroll-margin: 18px;
   }

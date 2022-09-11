@@ -1,19 +1,30 @@
 .swimlane {
   height: 100%;
-  background: #dbe0ff;
-  padding: 10px 12px;
-  border: 1px solid #dbe0ff;
-  border-radius: 6px;
+  background: var(--surface-3);
+  padding: var(--size-4) 0;
+  border: 1px solid var(--surface-4);
+  border-radius: var(--radius-2);
   display: flex;
   flex-direction: column;
+  transition: all 0.2s var(--ease-3);
+
+  &.dragging {
+    background: var(--blue-0);
+    @media (prefers-color-scheme: dark) {
+      background: var(--blue-9);
+    }
+  }
 }
 
 .header {
+  margin-bottom: var(--size-4);
+  padding: 0 var(--size-4);
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 14px;
   flex: 1;
+  overflow: auto;
+  padding: 0 var(--size-4);
 }

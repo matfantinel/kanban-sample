@@ -1,11 +1,7 @@
 [
     {
         "status": "to-do",
-        "tasks": [
-            1,
-            2,
-            4
-        ]
+        "tasks": []
     },
     {
         "status": "done",
@@ -14,7 +10,10 @@
     {
         "status": "in-progress",
         "tasks": [
-            3
+            2,
+            1,
+            3,
+            4
         ]
     }
 ]

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import Swimlane from '../components/molecules/Swimlane';
 import TaskCard from '../components/molecules/TaskCard';
@@ -146,34 +146,23 @@ const SwimlanesContainer: React.FC = () => {
     const statusTasks = getTasksByStatus(status)?.tasks;
     if (!statusTasks) return null;
 
-    return (
-      <Droppable droppableId={status}>
-        {(provided, snapshot) => (
-          <div {...provided.droppableProps} ref={provided.innerRef} style={{ height: '100%' }}>
-            {statusTasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                {(provided, snapshot) => (
-                  <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                    <TaskCard task={task} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    );
+    return statusTasks.map((task, index) => <TaskCard key={task.id} task={task} index={index} />);
   };
 
   return (
     <Swimlanes>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Swimlane title='To-Do'>{buildSwimlaneContent(TaskStatus.ToDo)}</Swimlane>
+        <Swimlane title='To-Do' status={TaskStatus.ToDo}>
+          {buildSwimlaneContent(TaskStatus.ToDo)}
+        </Swimlane>
 
-        <Swimlane title='In Progress'>{buildSwimlaneContent(TaskStatus.InProgress)}</Swimlane>
+        <Swimlane title='In Progress' status={TaskStatus.InProgress}>
+          {buildSwimlaneContent(TaskStatus.InProgress)}
+        </Swimlane>
 
-        <Swimlane title='Done'>{buildSwimlaneContent(TaskStatus.Done)}</Swimlane>
+        <Swimlane title='Done' status={TaskStatus.Done}>
+          {buildSwimlaneContent(TaskStatus.Done)}
+        </Swimlane>
       </DragDropContext>
     </Swimlanes>
   );

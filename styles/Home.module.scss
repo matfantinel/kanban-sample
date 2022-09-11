@@ -1,7 +1,9 @@
-.container {
-  
-}
-
 .main {
   height: 100vh;
+
+  background-image: var(--gradient-7);
+
+  @media (prefers-color-scheme: dark) {
+    background-image: var(--gradient-29);
+  }
 }
