@@ -1,7 +1,8 @@
 // import * as fs from 'fs';
+import * as fs from 'fs';
+
 import data from '../../data/tasks.json';
 import { Task, TaskStatus } from './types';
-import * as fs from 'fs';
 
 let tasks = (data as Task[]) ?? [];
 
@@ -38,7 +39,9 @@ const update = (id: number, task: Task) => {
     throw new Error(`Task with id ${id} not found`);
   }
 
+  // console.log({ taskToUpdate, task });
   Object.assign(taskToUpdate, task);
+  // console.log({ taskToUpdate });
   saveData();
   return taskToUpdate;
 };

@@ -1,4 +1,4 @@
-import TaskRepository from '../../../includes/repositories/tasks';
+import TaskRepository from '../../../includes/tasks/server';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -13,7 +13,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   } else {
     if (req.method === 'PUT') {
       try {
-        const task = req.body;
+        const task = JSON.parse(req.body);
         const result = TaskRepository.update(id, task);
         res.status(200).json(result);
       } catch (error) {
