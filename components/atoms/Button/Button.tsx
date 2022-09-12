@@ -5,13 +5,18 @@ import styles from './Button.module.scss';
 type Props = {
   children: React.ReactNode;
   color?: 'blue' | 'green' | 'red';
-  onClick: () => void;
-  [x:string]: any;
+  onClick?: () => void;
+  [x: string]: any;
 };
 
-const Button: React.FC<Props> = ({ color = 'blue', children, onClick, ...rest }) => {
+const Button: React.FC<Props> = ({ color, children, onClick, ...rest }) => {
   return (
-    <button className={`${styles.button} ${styles[color]}`} title='Add new task' onClick={onClick} {...rest}>
+    <button
+      className={`${styles.button} ${color && styles[color]}`}
+      title='Add new task'
+      onClick={onClick && onClick}
+      {...rest}
+    >
       {children}
     </button>
   );

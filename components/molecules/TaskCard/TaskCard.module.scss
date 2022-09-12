@@ -14,16 +14,18 @@
     border-color: var(--blue-5);
   }
 
-  &:not(:last-child) {
-    margin-bottom: var(--size-2);
+  &:not(:first-child) {
+    margin-top: var(--size-2);
   }
 
-  &:hover {
-    box-shadow: var(--shadow-4);
+  @media not all and (hover: none) {
+    &:hover {
+      box-shadow: var(--shadow-4);
 
-    .actions {
-      opacity: 1;
-      max-height: 100px;
+      .actions {
+        opacity: 1;
+        max-height: 100px;
+      }
     }
   }
 
@@ -36,9 +38,12 @@
   display: flex;
   align-items: center;
   gap: var(--size-2);
-  opacity: 0;
   transition: all 0.3s var(--ease-1);
-  position: absolute;
-  right: var(--size-4);
-  bottom: var(--size-2);
+
+  @media not all and (hover: none) {
+    opacity: 0;
+    position: absolute;
+    right: var(--size-4);
+    bottom: var(--size-2);
+  }
 }

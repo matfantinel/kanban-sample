@@ -26,7 +26,7 @@ const TaskCard: React.FC<Props> = ({ task, index, onEditClick, onDeleteClick }) 
           <h4 className={styles.title}>{task.title}</h4>
           <p>{task.description}</p>
           <div className={styles.actions}>
-            <Button title='Edit task' onClick={() => onEditClick(task)}>
+            <Button color="blue" title='Edit task' onClick={() => onEditClick(task)}>
               <EditPencil />
             </Button>
             <Button color='red' title='Delete task' onClick={() => onDeleteClick(task.id)}>
