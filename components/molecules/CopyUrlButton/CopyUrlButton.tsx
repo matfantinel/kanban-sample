@@ -23,7 +23,7 @@ const CopyUrlButton: React.FC<Props> = ({ url, onClick, ...rest }) => {
 
     setTimeout(() => {
       setCopied(false);
-    }, 800);
+    }, 2000);
   }, []);
 
   const handleClick = () => {
