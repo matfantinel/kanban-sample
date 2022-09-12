@@ -1,9 +1,10 @@
+import { Plus } from 'iconoir-react';
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
 import { TaskStatus } from '../../../includes/tasks/types';
+import Button from '../../atoms/Button';
 import styles from './Swimlane.module.scss';
-import { Plus } from 'iconoir-react';
 
 type Props = {
   title: string;
@@ -24,9 +25,9 @@ const Swimlane: React.FC<Props> = ({ title, status, children, onCreateClick }) =
           <div className={styles.header}>
             <h2>{title}</h2>
             <div className={styles.actions}>
-              <button className={styles.create} title='Add new task' onClick={onCreateClick}>
+              <Button color='green' title='Add new task' onClick={onCreateClick}>
                 <Plus />
-              </button>
+              </Button>
             </div>
           </div>
           <div className={styles.content}>{children}</div>
