@@ -70,4 +70,20 @@
       --text-shadow-color: var(--red-8);
     }
   }
+
+  &.yellow {
+    --text-color: var(--yellow-6);
+    --background-color: var(--yellow-0);
+    --background-color--hover: var(--yellow-1);
+    --border-color: var(--yellow-1);
+    --text-shadow-color: var(--yellow-2);
+
+    @media (prefers-color-scheme: dark) {
+      --text-color: var(--yellow-1);
+      --background-color: hsl(var(--yellow-9-hsl) / 30%);
+      --background-color--hover: var(--yellow-8);
+      --border-color: hsl(var(--yellow-8-hsl) / 30%);
+      --text-shadow-color: var(--yellow-8);
+    }
+  }
 }
