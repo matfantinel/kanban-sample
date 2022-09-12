@@ -9,7 +9,7 @@ type Props = {
   status: TaskStatus;
   showAddButton?: boolean;
   children: React.ReactNode;
-  onCreateClick: () => void;
+  onCreateClick?: () => void;
 };
 
 const Swimlane: React.FC<Props> = ({ status, showAddButton, children, onCreateClick }) => {

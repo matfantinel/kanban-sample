@@ -16,6 +16,7 @@ type Props = {
 
 const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
   const router = useRouter();
+  
   const { tasks, updateTask, createTask, deleteTask } = useTasks();
   const { taskOrders, upsertTaskOrder } = useTaskOrders();
 
@@ -25,6 +26,8 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
 
   const [selectedTask, setSelectedTask] = useState<Task | undefined>();
   const [hasOpenedDialogFromUrl, setHasOpenedDialogFromUrl] = useState(false);
+
+  // #region Content rendering
 
   useEffect(() => {
     const filterAndSortTasks = (status: TaskStatus) => {
@@ -45,10 +48,12 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
     };
 
     if (tasks) {
+      // Organize tasks into swimlanes
       setTodoTasks(filterAndSortTasks(TaskStatus.ToDo));
       setInProgressTasks(filterAndSortTasks(TaskStatus.InProgress));
       setDoneTasks(filterAndSortTasks(TaskStatus.Done));
 
+      // If opened a url with a task id, open the dialog
       if (taskIdFromUrl && !hasOpenedDialogFromUrl) {
         setSelectedTask(tasks.find((task) => task.id === taskIdFromUrl));
         setIsEditDialogOpen(true);
@@ -69,6 +74,25 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
         return null;
     }
   };
+
+  const buildSwimlaneContent = (status: TaskStatus) => {
+    const statusTasks = getTasksByStatus(status)?.tasks;
+    if (!statusTasks) return null;
+
+    return statusTasks.map((task, index) => (
+      <TaskCard
+        key={task.id}
+        task={task}
+        index={index}
+        onEditClick={handleTaskEditClick}
+        onDeleteClick={handleTaskDeleteClick}
+      />
+    ));
+  };
+
+  // #endregion
+
+  // #region Events
 
   const handleTaskOrderUpsert = (status: TaskStatus, tasks: Task[]) => {
     let orderToUpsert = taskOrders?.find((order) => order.status === status);
@@ -122,7 +146,7 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
     };
   };
 
-  const onDragEnd = (result: DropResult) => {
+  const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
@@ -158,24 +182,7 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
     }
   };
 
-  const buildSwimlaneContent = (status: TaskStatus) => {
-    const statusTasks = getTasksByStatus(status)?.tasks;
-    if (!statusTasks) return null;
-
-    return statusTasks.map((task, index) => (
-      <TaskCard
-        key={task.id}
-        task={task}
-        index={index}
-        onEditClick={handleTaskEditClick}
-        onDeleteClick={handleTaskDeleteClick}
-      />
-    ));
-  };
-
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
-  const handleTaskCreateClick = (status: TaskStatus) => {
+  const handleTaskCreateClick = () => {
     setIsEditDialogOpen(true);
     setSelectedTask(undefined);
     router.push('/', undefined, { shallow: true });
@@ -190,6 +197,12 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
   const handleTaskDeleteClick = (id: number) => {
     deleteTask(id);
   };
+
+  // #endregion
+
+  // #region Edit Dialog
+
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const handleEditDialogClose = () => {
     setIsEditDialogOpen(false);
@@ -209,23 +222,26 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
     router.push('/', undefined, { shallow: true });
   };
 
+  // #endregion
+
   return (
     <>
       <Swimlanes>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Swimlane status={TaskStatus.ToDo} showAddButton onCreateClick={() => handleTaskCreateClick(TaskStatus.ToDo)}>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Swimlane status={TaskStatus.ToDo} showAddButton onCreateClick={handleTaskCreateClick}>
             {buildSwimlaneContent(TaskStatus.ToDo)}
           </Swimlane>
 
-          <Swimlane status={TaskStatus.InProgress} onCreateClick={() => handleTaskCreateClick(TaskStatus.InProgress)}>
+          <Swimlane status={TaskStatus.InProgress}>
             {buildSwimlaneContent(TaskStatus.InProgress)}
           </Swimlane>
 
-          <Swimlane status={TaskStatus.Done} onCreateClick={() => handleTaskCreateClick(TaskStatus.Done)}>
+          <Swimlane status={TaskStatus.Done}>
             {buildSwimlaneContent(TaskStatus.Done)}
           </Swimlane>
         </DragDropContext>
       </Swimlanes>
+
       <TaskEditDialog
         task={selectedTask}
         isOpen={isEditDialogOpen}
