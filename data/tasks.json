@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "title": "Task 1",
+        "description": "Task number one",
+        "status": "To Do",
+        "id": 1
+    },
+    {
+        "title": "Task 2",
+        "description": "Task number two",
+        "status": "To Do",
+        "id": 2
+    },
+    {
+        "title": "Task 3",
+        "description": "Task number three",
+        "status": "To Do",
+        "id": 3
+    },
+    {
+        "title": "Task 4",
+        "description": "Task number four",
+        "status": "To Do",
+        "id": 4
+    }
+]

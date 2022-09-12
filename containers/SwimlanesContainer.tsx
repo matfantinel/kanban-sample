@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
@@ -9,13 +10,21 @@ import { useTaskOrders } from '../includes/task-orders/client';
 import { useTasks } from '../includes/tasks/client';
 import { Task, TaskStatus } from '../includes/tasks/types';
 
-const SwimlanesContainer: React.FC = () => {
+type Props = {
+  taskId?: number;
+};
+
+const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
+  const router = useRouter();
   const { tasks, updateTask, createTask, deleteTask } = useTasks();
   const { taskOrders, upsertTaskOrder } = useTaskOrders();
 
   const [todoTasks, setTodoTasks] = useState<Task[]>([]);
   const [inProgressTasks, setInProgressTasks] = useState<Task[]>([]);
   const [doneTasks, setDoneTasks] = useState<Task[]>([]);
+
+  const [selectedTask, setSelectedTask] = useState<Task | undefined>();
+  const [hasOpenedDialogFromUrl, setHasOpenedDialogFromUrl] = useState(false);
 
   useEffect(() => {
     const filterAndSortTasks = (status: TaskStatus) => {
@@ -39,8 +48,14 @@ const SwimlanesContainer: React.FC = () => {
       setTodoTasks(filterAndSortTasks(TaskStatus.ToDo));
       setInProgressTasks(filterAndSortTasks(TaskStatus.InProgress));
       setDoneTasks(filterAndSortTasks(TaskStatus.Done));
+
+      if (taskIdFromUrl && !hasOpenedDialogFromUrl) {
+        setSelectedTask(tasks.find((task) => task.id === taskIdFromUrl));
+        setIsEditDialogOpen(true);
+        setHasOpenedDialogFromUrl(true);
+      }
     }
-  }, [tasks, taskOrders]);
+  }, [tasks, taskOrders, taskIdFromUrl, selectedTask, hasOpenedDialogFromUrl]);
 
   const getTasksByStatus = (status: TaskStatus) => {
     switch (status) {
@@ -159,16 +174,17 @@ const SwimlanesContainer: React.FC = () => {
   };
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<Task | undefined>();
 
   const handleTaskCreateClick = (status: TaskStatus) => {
     setIsEditDialogOpen(true);
     setSelectedTask(undefined);
+    router.push('/', undefined, { shallow: true });
   };
 
   const handleTaskEditClick = (task: Task) => {
     setIsEditDialogOpen(true);
     setSelectedTask(task);
+    router.push(`/${task.id}`, undefined, { shallow: true });
   };
 
   const handleTaskDeleteClick = (id: number) => {
@@ -178,6 +194,7 @@ const SwimlanesContainer: React.FC = () => {
   const handleEditDialogClose = () => {
     setIsEditDialogOpen(false);
     setSelectedTask(undefined);
+    router.push('/', undefined, { shallow: true });
   };
 
   const handleEditDialogSubmit = async (task: Task) => {
@@ -189,6 +206,7 @@ const SwimlanesContainer: React.FC = () => {
 
     setIsEditDialogOpen(false);
     setSelectedTask(undefined);
+    router.push('/', undefined, { shallow: true });
   };
 
   return (

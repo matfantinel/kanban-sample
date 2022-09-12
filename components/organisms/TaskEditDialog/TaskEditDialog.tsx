@@ -39,6 +39,10 @@ const TaskEditDialog: React.FC<Props> = ({ task, isOpen, onClose, onSubmit }) =>
     };
 
     if (onSubmit) onSubmit(result as Task);
+
+    setTitle('');
+    setDescription('');
+    setStatus(TaskStatus.ToDo);
   };
 
   return (
