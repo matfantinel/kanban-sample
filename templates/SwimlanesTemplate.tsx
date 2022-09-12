@@ -14,7 +14,7 @@ type Props = {
   taskId?: number;
 };
 
-const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
+const SwimlanesTemplate: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
   const router = useRouter();
   
   const { tasks, updateTask, createTask, deleteTask } = useTasks();
@@ -252,4 +252,4 @@ const SwimlanesContainer: React.FC<Props> = ({ taskId: taskIdFromUrl }) => {
   );
 };
 
-export default SwimlanesContainer;
+export default SwimlanesTemplate;
