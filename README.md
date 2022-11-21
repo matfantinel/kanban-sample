@@ -1,23 +1,22 @@
-# Technical assignment front-end engineer
-Create a minimal Kanban board on which you can create, view and move tickets between columns.
+# Kanban Sample
 
-Your task is to:
+Sample NextJS app that offers a kanban board and saves data locally.
 
-- be able to create tickets on the board.
-- be able to move tickets between the various columns in an interactive way, persisting across page refreshes.
-- be able to share a direct link to the ticket.
 
-You are free to use the tools you prefer, however, we strongly suggest you keep the hard skills of the job offer in mind.
+## How to run
 
-**Minimal requirements**
+Simply running `npm install` and then `npm run dev` (NodeJS v16+) should be enough to get the app running. It will be available at `localhost:3000`.
 
-The three pillars of front-end development are HTML, CSS and JavaScript. We would like to see you know how to use them for the right job.
-* Use React
-* Pay attention to semantics: any HTML might work, but choosing the right tags show you care.
-* Show us you know how to create a modern user interface using your favourite styling solution.
-* Interact with an API. [JSON Server](https://github.com/typicode/json-server) can be used to add a fake REST API or you can decide to build your own.
+## About the Project
 
-**Timing**
+This is a standard NextJS app with TypeScript. I've chosen it because it provides a quick way to setup an application with great defaults. I've used SASS for styling, more as a way of displaying my familiarity with it, but for a project of this size I don't think it'd be necessary. Open Props is used to provide a standardized visual style.
 
-You have one week to complete the assignment. You decide yourself how much time and effort you invest in it, but quality(!) and a reasonable delivery time are always highly appreciated. 
-Please send us an email (jobs@madewithlove.com) when you think the assignment is ready for review. Please mention your name, Github username, and a link to what we need to review.
+For fetching data, I've used [SWR](https://swr.vercel.app/) because, being Hooks-based, it plays nice with React, as well as providing caching and revalidation out of the box.
+
+## Project Structure
+
+Components are organized following the [Atomic Design](https://www.blueacornici.com/blog/5-major-elements-of-atomic-design/) principles, and are split into Atoms, Molecules, Organisms and Templates. Each component only holds code that is specific to it, and data fetching/handling is reserved for the Template level.
+
+Styles are organized in a similar way, with the exception of the `app.scss` file, which contains/imports global styles and variables.
+
+Data-related files are organized in the `includes` folder, with types and data-fetching hooks separated by data type (in this case, just Characters).
